@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dst.dtools.views.R;
 import com.dst.dtools.views.tmv.TopMenuView;
 
 public class AnotherActivity extends AppCompatActivity {

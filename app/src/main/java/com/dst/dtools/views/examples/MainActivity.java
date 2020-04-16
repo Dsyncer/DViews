@@ -30,7 +30,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dst.dtools.views.R;
 import com.dst.dtools.views.tmv.TopMenuView;
 
 import java.util.Random;
