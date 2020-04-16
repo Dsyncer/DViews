@@ -15,7 +15,7 @@ limitations under the License.
  */
 
 
-package com.dst.dtools.views;
+package com.dst.dtools.views.examples;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +24,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dst.dtools.views.R;
 import com.dst.dtools.views.tmv.TopMenuView;
 
 public class AnotherActivity extends AppCompatActivity {

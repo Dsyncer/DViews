@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package com.dst.dtools.views;
+package com.dst.dtools.views.examples;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +30,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dst.dtools.views.R;
 import com.dst.dtools.views.tmv.TopMenuView;
 
 import java.util.Random;
