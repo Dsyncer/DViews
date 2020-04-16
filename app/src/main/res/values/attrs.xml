@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TopMenuView">
+        <attr name="backgroundColor" format="color"/>
+        <attr name="itemColor" format="color"/>
+        <attr name="selectedItemColor" format="color"/>
+        <attr name="itemPadding" format="dimension"/>
+        <attr name="layoutPadding" format="dimension"/>
+        <attr name="centerOnSelectedItem" format="boolean"/>
+    </declare-styleable>
+</resources>

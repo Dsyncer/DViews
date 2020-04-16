@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ViewsExample</string>
+    <string name="myProfie">My Profile</string>
+    <string name="myFeed">My Feed</string>
+</resources>
