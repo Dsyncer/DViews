@@ -11,11 +11,25 @@ This is an intuitive and easy-to-use element for navigating the application. It 
 
 ###### How to use in your project
 
-1.Copy TopMenuView.java file from "DViews/app/src/main/java/com/dst/dtools/views/tmv/"
+Add next lines into your build.gradle (:app):
+```gradle
+//It is necessary to add that maven repository
+repositories {
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/dsyncer/dviews")
+        credentials {
+            username = "Dsyncer"
+            password = "06fb0b533f2786935f4a6df3f118cefac783d9af"
+        }
+    }
+}
 
-2.Copy view_top_menu.xml from "DViews/app/src/main/res/layout/"
-
-3.Copy attrs.xml from "DViews/app/src/main/res/values/"
+dependencies {
+     implementation 'com.dst.dtools.views:dviews:1.0'
+     //other dependencies
+}
+```
 
 ###### Example of usage
 ```java
@@ -31,3 +45,6 @@ topMenuView.setOnTopMenuItemClickListener(new TopMenuView.OnTopMenuItemClickList
 ###### View screenshot
 
 ![TopMenuView Screenshot](/TopMenuViewScreenShot.jpg)
+
+## Feedback
+If you find any bug please create an issue or contact me via email den4ikindota2@gmail.com. If you have any suggestions also feel free to contact me. If you found that project usefull please give it a star. If you used it in your app please send me link to your app and I'll post it here. 
