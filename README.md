@@ -20,7 +20,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/dsyncer/dviews")
         credentials {
             username = "Dsyncer"
-            password = "06fb0b533f2786935f4a6df3f118cefac783d9af"
+            password = "642ab89f2c08f66dd9d1d77e720b8b5023ec0d89"
         }
     }
 }
