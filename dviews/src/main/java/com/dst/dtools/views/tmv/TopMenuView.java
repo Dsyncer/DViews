@@ -39,6 +39,9 @@ import com.dst.dtools.views.R;
  * @version 1.0
  */
 
+/**
+ * Intuitive and easy-to-use element for navigating the application
+ */
 public class TopMenuView extends LinearLayout {
 
     private String[] menuItems = {"Item1", "Item2", "Item3"};
@@ -52,11 +55,15 @@ public class TopMenuView extends LinearLayout {
     private int itemPadding, layoutPadding;
     private boolean centerOnSelectedItem;
 
+    /**
+     * Interface for setting callback that will be called every time
+     * one of the items were pressed (if interface has been set)
+     */
     public interface OnTopMenuItemClickListener {
         /**
          * function that will be called every time one of
          * the items were pressed (if interface has been set)
-         * @param pos position of the item (counts from 0) and corresponds to its position in menuItems
+         * @param pos position of the item (counts from 0) and corresponds to its position in variable menuItems
          * @param textView TextView which was pressed
          */
         void topMenuItemClick(int pos, TextView textView);
@@ -66,6 +73,12 @@ public class TopMenuView extends LinearLayout {
         this.topMenuItemClickListener = topMenuItemClickListener;
     }
 
+    /**
+     * Function for setting item for TopMenuView
+     * It will redraw the view and reset curSelectedItem if it is more
+     * them menuItems.length
+     * @param menuItems String array of items that needs to be set
+     */
     public void setMenuItems(String[] menuItems) {
         if (curSelectedItem >= menuItems.length)
             curSelectedItem = 0;
@@ -176,6 +189,12 @@ public class TopMenuView extends LinearLayout {
         return curSelectedItem;
     }
 
+    /**
+     * function to set static variable curSelectedItem and highlight TextView that
+     * located on selectedItem position. It will automatically remove highlight from previously
+     * selected TextView
+     * @param selectedItem position of selected item that corresponds to its position inside variable menuItems
+     */
     public void setCurSelectedItem(int selectedItem) {
         menuItemsTVs[curSelectedItem].setTextColor(itemColor);
         curSelectedItem = selectedItem;
