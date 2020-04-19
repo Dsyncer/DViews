@@ -25,6 +25,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,11 +50,13 @@ public class TopMenuView extends LinearLayout {
     private OnTopMenuItemClickListener topMenuItemClickListener;
 
     private static int curSelectedItem;
-    private TextView selectedTextView;
+    private LinearLayout selectedItem;
 
-    private int selectedItemColor, backgroundColor, itemColor;
-    private int itemPadding, layoutPadding;
-    private boolean centerOnSelectedItem;
+    private int selectedItemColor, backgroundColor, itemColor, underlineColor;
+    private int itemPadding, layoutPadding, underlineHeight;
+    private boolean centerOnSelectedItem, underline;
+
+    private LinearLayout mainLinearLayout;
 
     /**
      * Interface for setting callback that will be called every time
@@ -112,6 +115,9 @@ public class TopMenuView extends LinearLayout {
             backgroundColor = a.getColor(R.styleable.TopMenuView_backgroundColor, Color.parseColor("#728844"));
             itemColor = a.getColor(R.styleable.TopMenuView_itemColor, Color.parseColor("#ffffff"));
             selectedItemColor = a.getInteger(R.styleable.TopMenuView_selectedItemColor, Color.parseColor("#000000"));
+            underlineColor = a.getInteger(R.styleable.TopMenuView_underlineColor, selectedItemColor);
+            underline = a.getBoolean(R.styleable.TopMenuView_underline, true);
+            underlineHeight = a.getDimensionPixelSize(R.styleable.TopMenuView_underlineHeight, 8);
             itemPadding = a.getDimensionPixelSize(R.styleable.TopMenuView_itemPadding, 30);
             layoutPadding = a.getDimensionPixelSize(R.styleable.TopMenuView_layoutPadding, 30);
             centerOnSelectedItem = a.getBoolean(R.styleable.TopMenuView_centerOnSelectedItem, true);
@@ -134,17 +140,30 @@ public class TopMenuView extends LinearLayout {
         View topMenuLayout = inflater.inflate(R.layout.view_top_menu, null);
         topMenuLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-        final LinearLayout mainLinearLayout = topMenuLayout.findViewById(R.id.v_tm_layout);
+        mainLinearLayout = topMenuLayout.findViewById(R.id.v_tm_layout);
         mainLinearLayout.setWeightSum(menuItems.length);
         mainLinearLayout.setBackgroundColor(backgroundColor);
-        mainLinearLayout.setPadding(layoutPadding, layoutPadding, layoutPadding, layoutPadding);
+        mainLinearLayout.setPadding(layoutPadding, 0, layoutPadding, 0);
         final HorizontalScrollView horizontalScrollView = topMenuLayout.findViewById(R.id.v_tm_scroll);
         menuItemsTVs = new TextView[menuItems.length];
         for(int i = 0; i < menuItems.length; i++){
+            final LinearLayout linearLayout = new LinearLayout(getContext());
+            LayoutParams layoutParamsLinear = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1);
+            linearLayout.setLayoutParams(layoutParamsLinear);
+            linearLayout.setOrientation(VERTICAL);
+            linearLayout.setPadding(0, layoutPadding, 0, layoutPadding);
+
             final TextView textView = createTextView(menuItems[i]);
+            linearLayout.addView(textView);
+
             if(i == curSelectedItem) {
                 textView.setTextColor(selectedItemColor);
-                selectedTextView = textView;
+                selectedItem = linearLayout;
+
+                if (underline) {
+                    linearLayout.addView(createUnderlineView());
+                    linearLayout.setPadding(0, layoutPadding, 0, 0);
+                }
             }
             final int finalI = i;
             textView.setOnClickListener(new OnClickListener() {
@@ -153,12 +172,12 @@ public class TopMenuView extends LinearLayout {
                     if (topMenuItemClickListener != null) {
                         topMenuItemClickListener.topMenuItemClick(finalI, textView);
                         if (centerOnSelectedItem) {
-                            selectedTextView = textView;
+                            selectedItem = linearLayout;
                             horizontalScrollView.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (selectedTextView != null)
-                                        horizontalScrollView.smoothScrollTo((int) (selectedTextView.getX() + selectedTextView.getWidth() / 2 - horizontalScrollView.getWidth() / 2), 0);
+                                    if (selectedItem != null)
+                                        horizontalScrollView.smoothScrollTo((int) (selectedItem.getX() + selectedItem.getWidth() / 2 - horizontalScrollView.getWidth() / 2), 0);
                                 }
                             });
                         }
@@ -166,7 +185,7 @@ public class TopMenuView extends LinearLayout {
                 }
             });
             menuItemsTVs[i] = textView;
-            mainLinearLayout.addView(textView);
+            mainLinearLayout.addView(linearLayout);
         }
         addView(topMenuLayout);
 
@@ -174,15 +193,26 @@ public class TopMenuView extends LinearLayout {
             horizontalScrollView.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (selectedTextView != null)
-                        horizontalScrollView.smoothScrollTo((int) (selectedTextView.getX() + selectedTextView.getWidth() / 2 - horizontalScrollView.getWidth() / 2), 0);
+                    if (selectedItem != null)
+                        horizontalScrollView.smoothScrollTo((int) (selectedItem.getX() + selectedItem.getWidth() / 2 - horizontalScrollView.getWidth() / 2), 0);
                 }
             });
         }
     }
 
-    public TextView getSelectedTextView(){
-        return selectedTextView;
+    private View createUnderlineView(){
+        View view = new View(getContext());
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, underlineHeight);
+        layoutParams.setMargins(0, layoutPadding - underlineHeight, 0, 0);
+        layoutParams.gravity = Gravity.CENTER;
+        view.setLayoutParams(layoutParams);
+        view.setBackgroundColor(underlineColor);
+
+        return view;
+    }
+
+    public LinearLayout getSelectedTextView(){
+        return selectedItem;
     }
 
     public int getCurSelectedItem(){
@@ -197,13 +227,24 @@ public class TopMenuView extends LinearLayout {
      */
     public void setCurSelectedItem(int selectedItem) {
         menuItemsTVs[curSelectedItem].setTextColor(itemColor);
+        if (underline) {
+            ((LinearLayout) mainLinearLayout.getChildAt(curSelectedItem)).removeViewAt(1);
+            mainLinearLayout.getChildAt(curSelectedItem).setPadding(0, layoutPadding, 0, layoutPadding);
+        }
+
         curSelectedItem = selectedItem;
+
         menuItemsTVs[curSelectedItem].setTextColor(selectedItemColor);
+        if (underline) {
+            ((LinearLayout) mainLinearLayout.getChildAt(curSelectedItem)).addView(createUnderlineView());
+            mainLinearLayout.getChildAt(curSelectedItem).setPadding(0, layoutPadding, 0, 0);
+        }
     }
 
     private TextView createTextView(String text){
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1);
         layoutParams.setMargins(itemPadding, 0, itemPadding, 0);
+        layoutParams.gravity = Gravity.CENTER;
         TextView textView = new TextView(getContext());
         textView.setLayoutParams(layoutParams);
         textView.setTextColor(itemColor);

@@ -15,9 +15,13 @@
      app:itemPadding="dimension" set left and right margin between items
      app:centerOnSelectedItem="boolean" if true will center HorizontalScrollView
      on current selected item
+     app:underline="boolean" if true will underline selected item
+     app:underlineColor="color" color of underline of selected item
+     app:underlineHeight="dimension" height of underline's line
     !-->
 
     <com.dst.dtools.views.tmv.TopMenuView
+        app:underlineColor="#46512F"
         android:id="@+id/myTopMenu"
         app:layoutPadding="16dp"
         app:itemPadding="16dp"
