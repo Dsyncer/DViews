@@ -11,25 +11,17 @@ This is an intuitive and easy-to-use element for navigating the application. It 
 
 ###### How to use in your project
 
-Add next lines into your build.gradle (:app):
-```gradle
-//It is necessary to add that maven repository
-repositories {
-    maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/dsyncer/dviews")
-        credentials {
-            username = "Dsyncer"
-            password = "642ab89f2c08f66dd9d1d77e720b8b5023ec0d89"
-        }
-    }
-}
-
-dependencies {
-     implementation 'com.dst.dtools.views:dviews:1.0'
-     //other dependencies
-}
+Go to packages and download latest .aar file and import it as a library in android studio. Or install it with maven by adding
+next lines into your pom.xml
+```xml
+<dependency>
+  <groupId>com.dst.dtools.views</groupId>
+  <artifactId>dviews</artifactId>
+  <version>1.02</version>
+</dependency>
 ```
+And then run via command line
+`$ mvn install`
 
 ###### Example of usage
 ```java
